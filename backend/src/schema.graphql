@@ -1,0 +1,9 @@
+# This is not standard GraphQL, this is Prisma magic
+# import * from './generated/prisma.graphql'
+
+# These are the queries and the mutations that our server exposes to the client.
+# If we need additional data model elements (i.e. types) that we want to expose to the client, this is where we define them
+
+type Query {
+    users: [User]!
+}

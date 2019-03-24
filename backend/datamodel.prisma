@@ -1,0 +1,21 @@
+# This is the data model that we use in our DB. This gets deployed to Prisma
+
+type User {
+    id: ID! @unique
+    name: String!
+}
+
+type WishlistItem {
+    id: ID! @unique
+    title: String!
+    description: String
+    url: String!
+    reason: String
+    createdAt: DateTime!
+}
+
+type Wishlist {
+    id: ID! @unique
+    user: User!
+    items: [WishlistItem]
+}
