@@ -1,11 +1,15 @@
 const { GraphQLServer } = require("graphql-yoga");
+
+const Query = require("./resolvers/Query");
 const db = require("./db");
 
 module.exports = function createServer() {
     // This is our GraphQL server, which serves as a backend for our app
     return new GraphQLServer({
         typeDefs: "src/schema.graphql",
-        resolvers: {},
+        resolvers: {
+            Query
+        },
         resolverValidationOptions: {
             requireResolversForResolveType: false
         },
