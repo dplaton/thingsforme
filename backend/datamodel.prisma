@@ -5,6 +5,7 @@ type User {
     name: String!
     email: String! @unique
     password: String!
+    wishlists: [Wishlist]!
 }
 
 type WishlistItem {
@@ -19,5 +20,8 @@ type WishlistItem {
 type Wishlist {
     id: ID! @unique
     user: User!
+    name: String!
+    description: String
     items: [WishlistItem]
+    createdAt: DateTime!
 }
