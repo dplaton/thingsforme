@@ -1,14 +1,25 @@
 import React from "react";
-import { Container, Row } from "react-bootstrap";
-import Navigation from "./Navigation";
+import styled from "styled-components";
+
+import Header from "./Header";
+
+const InnerStyle = styled.div`
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 2rem;
+`;
+
+const ContentPage = styled.main`
+    padding: 2rem 0;
+`;
 
 const layout = props => (
-    <Container>
-        <Row>
-            <Navigation />
-        </Row>
-        <main>{props.children}</main>
-    </Container>
+    <div>
+        <InnerStyle>
+            <Header />
+            <ContentPage>{props.children}</ContentPage>
+        </InnerStyle>
+    </div>
 );
 
 export default layout;

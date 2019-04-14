@@ -1,32 +1,31 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import Col from "react-bootstrap/Col";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+const NavigationStyle = styled.ul`
+    list-style: none;
+    display: flex;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
+
+    a {
+        padding: 1rem 3rem;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+`;
 
 const Navigation = props => {
     return (
-        <Col md={12}>
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand>
-                    <NavLink to={"/"} exact={true}>
-                        Home
-                    </NavLink>
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse>
-                    <Nav className="mr-auto">
-                        <LinkContainer to={"/wishlists"} exact={true}>
-                            <Nav.Item eventkey={1}>My Wishlists</Nav.Item>
-                        </LinkContainer>
-                        <LinkContainer to={"/account"} exact={true}>
-                            <Nav.Item>My Account</Nav.Item>
-                        </LinkContainer>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
-        </Col>
+        <NavigationStyle>
+            <Link to="/wishlists">My wishlists</Link>
+            <Link to="/account">My account</Link>
+        </NavigationStyle>
     );
 };
 
