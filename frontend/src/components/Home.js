@@ -1,12 +1,7 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
 
 const Home = props => {
-    return (
-        <Row>
-            <Col md={12} />
-        </Row>
-    );
+    return <div>This is the home</div>;
 };
 
 export default Home;

@@ -8,17 +8,9 @@ import Wishlists from "./components/Wishlists";
 import WishlistItems from "./components/WishlistItems";
 
 const GlobalStyle = createGlobalStyle`
-    @font-face {
-        font-family: 'Roboto', sans-serif; ;
-        src: url("https://fonts.googleapis.com/css?family=Roboto");
-        font-weight: normal;
-        font-style:normal;
-    }
-
-
     html {
+        font-size:10px;
         box-sizing: border-box;
-        font-size: 10px;
     }
 
     *, *:before, *:after {
@@ -29,11 +21,13 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
     }
     body {
-        padding:0;
+        @import url("https://fonts.googleapis.com/css?family=Roboto");
+        font-family: 'Roboto';
+        font-weight: normal;
+        font-style:normal;
+        line-height: 1.5;
         margin:0;
-        font-size: 1.5rem;
-        line-height: 2;
-        font-family: 'Roboto'
+        padding:0;
     }
 `;
 

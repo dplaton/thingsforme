@@ -24,6 +24,9 @@ const WishlistDataStyle = styled.ul`
             transition: background-color 0.2s ease-in-out;
         }
     }
+    a {
+        text-decoration: none;
+    }
 `;
 
 const FormStyle = styled.form`
