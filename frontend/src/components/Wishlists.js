@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import gql from "graphql-tag";
+import { Query, Mutation } from "react-apollo";
+import { Redirect } from "react-router-dom";
 
-import data from "../data/testData";
+import ErrorMessage from "./ErrorMessage";
+import FormStyle from "./styles/FormStyle";
 
 const WishlistDataStyle = styled.ul`
     list-style: none;
@@ -29,84 +33,116 @@ const WishlistDataStyle = styled.ul`
     }
 `;
 
-const FormStyle = styled.form`
-    background: rgb(0, 0, 0, 0.02);
-    padding: 20px;
-    width: 40rem;
-    font-size: 1.5rem;
-    line-height: 1.5;
-    font-weight: 600;
-    label {
-        display: block;
-        margin-bottom: 1rem;
-    }
-    input {
-        width: 100%;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 1px solid lightgrey;
-        &:focus {
-            outline: 0;
-            border-color: green;
+const WISHSLISTS_QUERY = gql`
+    query WISHSLISTS_QUERY {
+        wishlists {
+            id
+            name
+            description
         }
     }
-    button,
-    input[type="submit"] {
-        width: auto;
-        padding: 0.5rem 1.2rem;
-        border: 0;
-        background: green;
-        color: white;
-        font-weight: 600;
-    }
-    fieldset {
-        border: 0;
-        padding: 0;
+`;
+
+const CREATE_WISHLIST_MUTATION = gql`
+    mutation ADD_WISHLIST_MUTATION($name: String!, $description: String) {
+        createWishlist(name: $name, description: $description) {
+            id
+        }
     }
 `;
 
 class Wishlists extends Component {
+    state = {
+        name: "",
+        description: ""
+    };
+
+    handleFormChange = event => {
+        const { name, value } = event;
+        this.setState({ [name]: value });
+    };
+
     render() {
         return (
             <>
-                <FormStyle>
-                    <fieldset>
-                        <label for="name">
-                            Name*
-                            <input
-                                name="name"
-                                type="text"
-                                placeholder="Add a name"
-                            />
-                        </label>
-                        <label for="description">
-                            Description
-                            <input
-                                name="description"
-                                type="text"
-                                placeholder="Add a description (optional)"
-                            />
-                        </label>
-                        <button type="submit">Add wishlist</button>
-                    </fieldset>
-                </FormStyle>
-                <WishlistDataStyle>
-                    {data().map(wishlist => (
-                        <Link
-                            to={`/wishlist/${wishlist.id}/items`}
-                            key={wishlist.id}
-                        >
-                            <li key={wishlist.id}>
-                                <div className="wishlist__data-name">
-                                    {wishlist.name}
-                                </div>
-                                <div className="wishlist__data-description">
-                                    {wishlist.description}
-                                </div>
-                            </li>
-                        </Link>
-                    ))}
-                </WishlistDataStyle>
+                <Mutation
+                    mutation={CREATE_WISHLIST_MUTATION}
+                    variables={this.state}
+                >
+                    {(createWishlist, { loading, error, data }) => {
+                        return (
+                            <FormStyle
+                                data-style="createWishlistForm"
+                                onSubmit={async e => {
+                                    e.preventDefault();
+                                    const res = await createWishlist();
+                                    console.log(res);
+                                    // return (
+                                    //     <Redirect
+                                    //         to={`/wishlist/${
+                                    //             res.data.createWishlsit.id
+                                    //         }/items`}
+                                    //     />
+                                    //);
+                                }}
+                            >
+                                <ErrorMessage error={error} />
+                                <fieldset
+                                    disabled={loading}
+                                    aria-busy={loading}
+                                >
+                                    <label htmlFor="name">
+                                        Name*
+                                        <input
+                                            name="name"
+                                            type="text"
+                                            placeholder="Add a name"
+                                            required
+                                            onChange={this.handleFormChange}
+                                        />
+                                    </label>
+                                    <label htmlFor="description">
+                                        Description
+                                        <input
+                                            name="description"
+                                            type="text"
+                                            placeholder="Add a description (optional)"
+                                            onChange={this.handleFormChange}
+                                        />
+                                    </label>
+                                    <button type="submit">Add wishlist</button>
+                                </fieldset>
+                            </FormStyle>
+                        );
+                    }}
+                </Mutation>
+                <Query query={WISHSLISTS_QUERY}>
+                    {({ data, loading, error }) => {
+                        if (loading) return "Loading...";
+                        if (error) {
+                            return <ErrorMessage error={error} />;
+                        }
+                        return (
+                            <WishlistDataStyle>
+                                {data.wishlists.map(wishlist => (
+                                    <Link
+                                        to={`/wishlist/${wishlist.id}/items`}
+                                        key={wishlist.id}
+                                    >
+                                        <li key={wishlist.id}>
+                                            <div className="wishlist__data-name">
+                                                {wishlist.name}
+                                            </div>
+                                            <div className="wishlist__data-description">
+                                                {wishlist.description}
+                                            </div>
+                                        </li>
+                                    </Link>
+                                ))}
+                            </WishlistDataStyle>
+                        );
+                    }}
+                </Query>
             </>
         );
     }

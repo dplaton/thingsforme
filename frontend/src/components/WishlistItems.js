@@ -64,7 +64,12 @@ class WishlistItem extends Component {
                             <p>{item.url}</p>
                             <p>{item.description}</p>
                             <div className="buttonList">
-                                <button>✏️ Edit</button>
+                                <button>
+                                    <span role="img" aria-label="edit">
+                                        ✏️
+                                    </span>{" "}
+                                    Edit
+                                </button>
                                 <button>Delete</button>
                             </div>
                         </Item>
