@@ -1,27 +1,38 @@
 # This is the data model that we use in our DB. This gets deployed to Prisma
 
 type User {
-    id: ID! @unique
+    id: ID! @unique @id
     name: String!
     email: String! @unique
     password: String!
-    wishlists: [Wishlist]!
+    updatedAt: DateTime! @updatedAt
+    createdAt: DateTime! @createdAt
+    roles: [Role!]! @scalarList(strategy: RELATION)
+    wishlists: [Wishlist]
 }
 
 type WishlistItem {
-    id: ID! @unique
+    id: ID! @unique @id
     title: String!
     description: String
     url: String!
     reason: String
-    createdAt: DateTime!
+    imageUrl: String
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
 }
 
 type Wishlist {
-    id: ID! @unique
+    id: ID! @unique @id
     user: User!
     name: String!
     description: String
     items: [WishlistItem]
-    createdAt: DateTime!
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+}
+
+enum Role {
+    ADMIN
+    USER
 }

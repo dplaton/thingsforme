@@ -6,4 +6,11 @@
 
 type Query {
     users: [User]!
+    wishlists: [Wishlist]!
+}
+
+type Mutation {
+    createWishlist(name: String!, description: String): Wishlist!
+    createUser(name: String!, email: String!, password: String!): User!
+    signIn(email: String!, password: String!): User!
 }
