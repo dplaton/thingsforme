@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ErrorMessage = styled.div`
     border: 1px solid red;
     font-size: 1.2rem;
-    padding: 2rem;
+    padding: 0.2rem 1rem;
     p {
         font-weight: 100;
     }
@@ -34,7 +34,7 @@ const DisplayError = ({ error }) => {
         ));
     }
 
-    return <ErrorMessage>{errDisplay(error.mesage)}</ErrorMessage>;
+    return <ErrorMessage>{errDisplay(error)}</ErrorMessage>;
 };
 
 export default DisplayError;
