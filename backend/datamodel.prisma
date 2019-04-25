@@ -20,6 +20,7 @@ type WishlistItem {
     imageUrl: String
     createdAt: DateTime! @createdAt
     updatedAt: DateTime! @updatedAt
+    wishlist: Wishlist! @relation
 }
 
 type Wishlist {
@@ -27,7 +28,7 @@ type Wishlist {
     user: User!
     name: String!
     description: String
-    items: [WishlistItem]
+    items: [WishlistItem] @relation
     createdAt: DateTime! @createdAt
     updatedAt: DateTime! @updatedAt
 }

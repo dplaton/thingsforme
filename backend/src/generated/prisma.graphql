@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/daniel-platon-869681/thingsforme-backend/dev
-# timestamp: Sat Apr 20 2019 15:26:24 GMT+0300 (Eastern European Summer Time)
+# timestamp: Thu Apr 25 2019 20:45:04 GMT+0300 (Eastern European Summer Time)
 
 type AggregateUser {
   count: Int!
@@ -28,23 +28,23 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createWishlist(data: WishlistCreateInput!): Wishlist!
   createWishlistItem(data: WishlistItemCreateInput!): WishlistItem!
+  createWishlist(data: WishlistCreateInput!): Wishlist!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateWishlist(data: WishlistUpdateInput!, where: WishlistWhereUniqueInput!): Wishlist
   updateWishlistItem(data: WishlistItemUpdateInput!, where: WishlistItemWhereUniqueInput!): WishlistItem
+  updateWishlist(data: WishlistUpdateInput!, where: WishlistWhereUniqueInput!): Wishlist
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteWishlist(where: WishlistWhereUniqueInput!): Wishlist
   deleteWishlistItem(where: WishlistItemWhereUniqueInput!): WishlistItem
+  deleteWishlist(where: WishlistWhereUniqueInput!): Wishlist
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertWishlist(where: WishlistWhereUniqueInput!, create: WishlistCreateInput!, update: WishlistUpdateInput!): Wishlist!
   upsertWishlistItem(where: WishlistItemWhereUniqueInput!, create: WishlistItemCreateInput!, update: WishlistItemUpdateInput!): WishlistItem!
+  upsertWishlist(where: WishlistWhereUniqueInput!, create: WishlistCreateInput!, update: WishlistUpdateInput!): Wishlist!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManyWishlists(data: WishlistUpdateManyMutationInput!, where: WishlistWhereInput): BatchPayload!
   updateManyWishlistItems(data: WishlistItemUpdateManyMutationInput!, where: WishlistItemWhereInput): BatchPayload!
+  updateManyWishlists(data: WishlistUpdateManyMutationInput!, where: WishlistWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyWishlists(where: WishlistWhereInput): BatchPayload!
   deleteManyWishlistItems(where: WishlistItemWhereInput): BatchPayload!
+  deleteManyWishlists(where: WishlistWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -76,14 +76,14 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  wishlists(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist]!
   wishlistItems(where: WishlistItemWhereInput, orderBy: WishlistItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WishlistItem]!
+  wishlists(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist]!
   user(where: UserWhereUniqueInput!): User
-  wishlist(where: WishlistWhereUniqueInput!): Wishlist
   wishlistItem(where: WishlistItemWhereUniqueInput!): WishlistItem
+  wishlist(where: WishlistWhereUniqueInput!): Wishlist
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  wishlistsConnection(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WishlistConnection!
   wishlistItemsConnection(where: WishlistItemWhereInput, orderBy: WishlistItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WishlistItemConnection!
+  wishlistsConnection(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WishlistConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -99,8 +99,8 @@ enum Role {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  wishlist(where: WishlistSubscriptionWhereInput): WishlistSubscriptionPayload
   wishlistItem(where: WishlistItemSubscriptionWhereInput): WishlistItemSubscriptionPayload
+  wishlist(where: WishlistSubscriptionWhereInput): WishlistSubscriptionPayload
 }
 
 type User implements Node {
@@ -507,7 +507,7 @@ input WishlistCreateInput {
   name: String!
   description: String
   user: UserCreateOneWithoutWishlistsInput!
-  items: WishlistItemCreateManyInput
+  items: WishlistItemCreateManyWithoutWishlistInput
 }
 
 input WishlistCreateManyWithoutUserInput {
@@ -515,11 +515,23 @@ input WishlistCreateManyWithoutUserInput {
   connect: [WishlistWhereUniqueInput!]
 }
 
+input WishlistCreateOneWithoutItemsInput {
+  create: WishlistCreateWithoutItemsInput
+  connect: WishlistWhereUniqueInput
+}
+
+input WishlistCreateWithoutItemsInput {
+  id: ID
+  name: String!
+  description: String
+  user: UserCreateOneWithoutWishlistsInput!
+}
+
 input WishlistCreateWithoutUserInput {
   id: ID
   name: String!
   description: String
-  items: WishlistItemCreateManyInput
+  items: WishlistItemCreateManyWithoutWishlistInput
 }
 
 """An edge in a connection."""
@@ -540,6 +552,7 @@ type WishlistItem implements Node {
   imageUrl: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  wishlist: Wishlist!
 }
 
 """A connection to a list of items."""
@@ -559,11 +572,21 @@ input WishlistItemCreateInput {
   url: String!
   reason: String
   imageUrl: String
+  wishlist: WishlistCreateOneWithoutItemsInput!
 }
 
-input WishlistItemCreateManyInput {
-  create: [WishlistItemCreateInput!]
+input WishlistItemCreateManyWithoutWishlistInput {
+  create: [WishlistItemCreateWithoutWishlistInput!]
   connect: [WishlistItemWhereUniqueInput!]
+}
+
+input WishlistItemCreateWithoutWishlistInput {
+  id: ID
+  title: String!
+  description: String
+  url: String!
+  reason: String
+  imageUrl: String
 }
 
 """An edge in a connection."""
@@ -937,20 +960,13 @@ input WishlistItemSubscriptionWhereInput {
   node: WishlistItemWhereInput
 }
 
-input WishlistItemUpdateDataInput {
-  title: String
-  description: String
-  url: String
-  reason: String
-  imageUrl: String
-}
-
 input WishlistItemUpdateInput {
   title: String
   description: String
   url: String
   reason: String
   imageUrl: String
+  wishlist: WishlistUpdateOneRequiredWithoutItemsInput
 }
 
 input WishlistItemUpdateManyDataInput {
@@ -961,18 +977,6 @@ input WishlistItemUpdateManyDataInput {
   imageUrl: String
 }
 
-input WishlistItemUpdateManyInput {
-  create: [WishlistItemCreateInput!]
-  connect: [WishlistItemWhereUniqueInput!]
-  set: [WishlistItemWhereUniqueInput!]
-  disconnect: [WishlistItemWhereUniqueInput!]
-  delete: [WishlistItemWhereUniqueInput!]
-  update: [WishlistItemUpdateWithWhereUniqueNestedInput!]
-  updateMany: [WishlistItemUpdateManyWithWhereNestedInput!]
-  deleteMany: [WishlistItemScalarWhereInput!]
-  upsert: [WishlistItemUpsertWithWhereUniqueNestedInput!]
-}
-
 input WishlistItemUpdateManyMutationInput {
   title: String
   description: String
@@ -981,20 +985,40 @@ input WishlistItemUpdateManyMutationInput {
   imageUrl: String
 }
 
+input WishlistItemUpdateManyWithoutWishlistInput {
+  create: [WishlistItemCreateWithoutWishlistInput!]
+  connect: [WishlistItemWhereUniqueInput!]
+  set: [WishlistItemWhereUniqueInput!]
+  disconnect: [WishlistItemWhereUniqueInput!]
+  delete: [WishlistItemWhereUniqueInput!]
+  update: [WishlistItemUpdateWithWhereUniqueWithoutWishlistInput!]
+  updateMany: [WishlistItemUpdateManyWithWhereNestedInput!]
+  deleteMany: [WishlistItemScalarWhereInput!]
+  upsert: [WishlistItemUpsertWithWhereUniqueWithoutWishlistInput!]
+}
+
 input WishlistItemUpdateManyWithWhereNestedInput {
   where: WishlistItemScalarWhereInput!
   data: WishlistItemUpdateManyDataInput!
 }
 
-input WishlistItemUpdateWithWhereUniqueNestedInput {
-  where: WishlistItemWhereUniqueInput!
-  data: WishlistItemUpdateDataInput!
+input WishlistItemUpdateWithoutWishlistDataInput {
+  title: String
+  description: String
+  url: String
+  reason: String
+  imageUrl: String
 }
 
-input WishlistItemUpsertWithWhereUniqueNestedInput {
+input WishlistItemUpdateWithWhereUniqueWithoutWishlistInput {
   where: WishlistItemWhereUniqueInput!
-  update: WishlistItemUpdateDataInput!
-  create: WishlistItemCreateInput!
+  data: WishlistItemUpdateWithoutWishlistDataInput!
+}
+
+input WishlistItemUpsertWithWhereUniqueWithoutWishlistInput {
+  where: WishlistItemWhereUniqueInput!
+  update: WishlistItemUpdateWithoutWishlistDataInput!
+  create: WishlistItemCreateWithoutWishlistInput!
 }
 
 input WishlistItemWhereInput {
@@ -1290,6 +1314,7 @@ input WishlistItemWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  wishlist: WishlistWhereInput
 }
 
 input WishlistItemWhereUniqueInput {
@@ -1533,7 +1558,7 @@ input WishlistUpdateInput {
   name: String
   description: String
   user: UserUpdateOneRequiredWithoutWishlistsInput
-  items: WishlistItemUpdateManyInput
+  items: WishlistItemUpdateManyWithoutWishlistInput
 }
 
 input WishlistUpdateManyDataInput {
@@ -1563,15 +1588,33 @@ input WishlistUpdateManyWithWhereNestedInput {
   data: WishlistUpdateManyDataInput!
 }
 
+input WishlistUpdateOneRequiredWithoutItemsInput {
+  create: WishlistCreateWithoutItemsInput
+  connect: WishlistWhereUniqueInput
+  update: WishlistUpdateWithoutItemsDataInput
+  upsert: WishlistUpsertWithoutItemsInput
+}
+
+input WishlistUpdateWithoutItemsDataInput {
+  name: String
+  description: String
+  user: UserUpdateOneRequiredWithoutWishlistsInput
+}
+
 input WishlistUpdateWithoutUserDataInput {
   name: String
   description: String
-  items: WishlistItemUpdateManyInput
+  items: WishlistItemUpdateManyWithoutWishlistInput
 }
 
 input WishlistUpdateWithWhereUniqueWithoutUserInput {
   where: WishlistWhereUniqueInput!
   data: WishlistUpdateWithoutUserDataInput!
+}
+
+input WishlistUpsertWithoutItemsInput {
+  update: WishlistUpdateWithoutItemsDataInput!
+  create: WishlistCreateWithoutItemsInput!
 }
 
 input WishlistUpsertWithWhereUniqueWithoutUserInput {

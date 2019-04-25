@@ -78,6 +78,43 @@ const Mutations = {
             maxAge: 1000 * 60 * 60 * 24 * 365
         });
         return theUser;
+    },
+
+    async addWishlistItem(parent, args, context, info) {
+        //TODO parameter validation
+        if (!args.url || args.url.length === 0) {
+            throw new Error(`Cannot add a wishlist item without an URL`);
+        }
+        const existingItems = await context.db.query.wishlistItems(
+            {
+                where: {
+                    url: args.url
+                }
+            },
+            info
+        );
+
+        if (existingItems && existingItems.length > 0) {
+            // do nothing
+            return existingItems[0];
+        }
+        const { title, description, url, reason, imageUrl } = args;
+        const newItem = await context.db.mutation.createWishlistItem({
+            data: {
+                title,
+                description,
+                url,
+                reason,
+                imageUrl,
+                wishlist: {
+                    connect: {
+                        id: args.wishlistId
+                    }
+                }
+            }
+        });
+
+        return newItem;
     }
 };
 
