@@ -30,6 +30,9 @@ const Mutations = {
     },
 
     async createWishlist(parent, args, context, info) {
+        if (!args.name) {
+            throw new Error("Cannot create a wishlist without a name");
+        }
         const wishlist = await context.db.mutation.createWishlist(
             {
                 data: {
