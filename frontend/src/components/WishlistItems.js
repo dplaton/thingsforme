@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import data from "../data/testData";
-
 const ItemList = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -52,31 +50,32 @@ const Item = styled.div`
 class WishlistItem extends Component {
     render() {
         const id = this.props.match.params.id;
-        const items = data().find(wishlist => wishlist.id === id).items;
-        return (
-            <div>
-                <h1>Items on whishlist</h1>
-                <ItemList>
-                    {items.map(item => (
-                        <Item key={item.id}>
-                            <h2>{item.name}</h2>
-                            <img src={item.imageUrl} />
-                            <p>{item.url}</p>
-                            <p>{item.description}</p>
-                            <div className="buttonList">
-                                <button>
-                                    <span role="img" aria-label="edit">
-                                        ✏️
-                                    </span>{" "}
-                                    Edit
-                                </button>
-                                <button>Delete</button>
-                            </div>
-                        </Item>
-                    ))}
-                </ItemList>
-            </div>
-        );
+        return null;
+        // const items = data().find(wishlist => wishlist.id === id).items;
+        // return (
+        //     <div>
+        //         <h1>Items on whishlist</h1>
+        //         <ItemList>
+        //             {items.map(item => (
+        //                 <Item key={item.id}>
+        //                     <h2>{item.name}</h2>
+        //                     <img src={item.imageUrl} />
+        //                     <p>{item.url}</p>
+        //                     <p>{item.description}</p>
+        //                     <div className="buttonList">
+        //                         <button>
+        //                             <span role="img" aria-label="edit">
+        //                                 ✏️
+        //                             </span>{" "}
+        //                             Edit
+        //                         </button>
+        //                         <button>Delete</button>
+        //                     </div>
+        //                 </Item>
+        //             ))}
+        //         </ItemList>
+        //     </div>
+        // );
     }
 }
 

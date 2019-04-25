@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
-import { Redirect } from "react-router-dom";
+import { Query } from "react-apollo";
+import { withRouter } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
 import FormStyle from "./styles/FormStyle";
+import AddWishlist from "./AddWishlist";
 
 const WishlistDataStyle = styled.ul`
     list-style: none;
@@ -43,79 +44,11 @@ const WISHSLISTS_QUERY = gql`
     }
 `;
 
-const CREATE_WISHLIST_MUTATION = gql`
-    mutation ADD_WISHLIST_MUTATION($name: String!, $description: String) {
-        createWishlist(name: $name, description: $description) {
-            id
-        }
-    }
-`;
-
 class Wishlists extends Component {
-    state = {
-        name: "",
-        description: ""
-    };
-
-    handleFormChange = event => {
-        const { name, value } = event;
-        this.setState({ [name]: value });
-    };
-
     render() {
         return (
-            <>
-                <Mutation
-                    mutation={CREATE_WISHLIST_MUTATION}
-                    variables={this.state}
-                >
-                    {(createWishlist, { loading, error, data }) => {
-                        return (
-                            <FormStyle
-                                data-style="createWishlistForm"
-                                onSubmit={async e => {
-                                    e.preventDefault();
-                                    const res = await createWishlist();
-                                    console.log(res);
-                                    // return (
-                                    //     <Redirect
-                                    //         to={`/wishlist/${
-                                    //             res.data.createWishlsit.id
-                                    //         }/items`}
-                                    //     />
-                                    //);
-                                }}
-                            >
-                                <ErrorMessage error={error} />
-                                <fieldset
-                                    disabled={loading}
-                                    aria-busy={loading}
-                                >
-                                    <label htmlFor="name">
-                                        Name*
-                                        <input
-                                            name="name"
-                                            type="text"
-                                            placeholder="Add a name"
-                                            required
-                                            onChange={this.handleFormChange}
-                                        />
-                                    </label>
-                                    <label htmlFor="description">
-                                        Description
-                                        <input
-                                            name="description"
-                                            type="text"
-                                            placeholder="Add a description (optional)"
-                                            onChange={this.handleFormChange}
-                                        />
-                                    </label>
-                                    <button type="submit">Add wishlist</button>
-                                </fieldset>
-                            </FormStyle>
-                        );
-                    }}
-                </Mutation>
+            <div>
+                <AddWishlist />
                 <Query query={WISHSLISTS_QUERY}>
                     {({ data, loading, error }) => {
                         if (loading) return "Loading...";
@@ -143,9 +76,9 @@ class Wishlists extends Component {
                         );
                     }}
                 </Query>
-            </>
+            </div>
         );
     }
 }
 
-export default Wishlists;
+export default withRouter(Wishlists);
