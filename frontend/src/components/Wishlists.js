@@ -36,7 +36,7 @@ const WishlistDataStyle = styled.ul`
 
 const WISHSLISTS_QUERY = gql`
     query WISHSLISTS_QUERY {
-        wishlists {
+        wishlists(orderBy: createdAt_DESC) {
             id
             name
             description
@@ -82,3 +82,4 @@ class Wishlists extends Component {
 }
 
 export default withRouter(Wishlists);
+export { WISHSLISTS_QUERY };

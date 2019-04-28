@@ -14,7 +14,6 @@ const FormStyle = styled.form`
     input {
         width: 100%;
         padding: 0.5rem;
-        font-size: 1rem;
         border: 1px solid lightgrey;
         &:focus {
             outline: 0;

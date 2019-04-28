@@ -5,6 +5,7 @@ import { Mutation } from "react-apollo";
 
 import ErrorMessage from "./ErrorMessage";
 import FormStyle from "./styles/FormStyle";
+import { WISHSLISTS_QUERY } from "./Wishlists";
 
 const CREATE_WISHLIST_MUTATION = gql`
     mutation ADD_WISHLIST_MUTATION($name: String!, $description: String) {
@@ -30,6 +31,7 @@ class AddWishlist extends Component {
             <Mutation
                 mutation={CREATE_WISHLIST_MUTATION}
                 variables={this.state}
+                refetchQueries={[{ query: WISHSLISTS_QUERY }]}
             >
                 {(createWishlist, { loading, error, data }) => {
                     return (

@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+
+import AddWishlistItem from "./AddWishlistItem";
+import ErrorMessage from "./ErrorMessage";
 
 const ItemList = styled.div`
     display: grid;
@@ -47,36 +52,58 @@ const Item = styled.div`
     }
 `;
 
+const WISHLIST_ITEMS_QUERY = gql`
+    query WISHLIST_ITEMS_QUERY($id: ID!) {
+        wishlistItems(where: { wishlist: { id: $id } }) {
+            id
+            title
+            url
+        }
+    }
+`;
+
 class WishlistItem extends Component {
     render() {
         const id = this.props.match.params.id;
-        return null;
-        // const items = data().find(wishlist => wishlist.id === id).items;
-        // return (
-        //     <div>
-        //         <h1>Items on whishlist</h1>
-        //         <ItemList>
-        //             {items.map(item => (
-        //                 <Item key={item.id}>
-        //                     <h2>{item.name}</h2>
-        //                     <img src={item.imageUrl} />
-        //                     <p>{item.url}</p>
-        //                     <p>{item.description}</p>
-        //                     <div className="buttonList">
-        //                         <button>
-        //                             <span role="img" aria-label="edit">
-        //                                 ✏️
-        //                             </span>{" "}
-        //                             Edit
-        //                         </button>
-        //                         <button>Delete</button>
-        //                     </div>
-        //                 </Item>
-        //             ))}
-        //         </ItemList>
-        //     </div>
-        // );
+        return (
+            <div>
+                <h1>Items on whishlist</h1>
+                <AddWishlistItem wishlistId={id} />
+                <Query query={WISHLIST_ITEMS_QUERY} variables={{ id }}>
+                    {({ data: { wishlistItems }, loading, error }) => {
+                        if (loading) return "Loading...";
+                        if (error) return <ErrorMessage error={error} />;
+                        console.log(wishlistItems);
+                        return (
+                            <ItemList>
+                                {wishlistItems.map(wish => (
+                                    <Item key={wish.id}>
+                                        <h2>{wish.title}</h2>
+                                        <img src={wish.imageUrl} />
+                                        <p>{wish.url}</p>
+                                        <p>{wish.description}</p>
+                                        <div className="buttonList">
+                                            <button>
+                                                <span
+                                                    role="img"
+                                                    aria-label="edit"
+                                                >
+                                                    ✏️
+                                                </span>{" "}
+                                                Edit
+                                            </button>
+                                            <button>Delete</button>
+                                        </div>
+                                    </Item>
+                                ))}
+                            </ItemList>
+                        );
+                    }}
+                </Query>
+            </div>
+        );
     }
 }
 
+export { WISHLIST_ITEMS_QUERY };
 export default WishlistItem;

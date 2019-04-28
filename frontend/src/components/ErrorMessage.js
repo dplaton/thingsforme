@@ -8,6 +8,9 @@ const ErrorMessage = styled.div`
     p {
         font-weight: 100;
     }
+    span {
+        margin-right: 1rem;
+    }
 `;
 
 const DisplayError = ({ error }) => {
