@@ -82,7 +82,6 @@ const Mutations = {
 
     async addWishlistItem(parent, args, context, info) {
         //TODO parameter validations
-        console.log(args);
         if (!args.url || args.url.length === 0) {
             throw new Error(`Cannot add a wishlist item without an URL`);
         }
