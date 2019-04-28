@@ -81,7 +81,8 @@ const Mutations = {
     },
 
     async addWishlistItem(parent, args, context, info) {
-        //TODO parameter validation
+        //TODO parameter validations
+        console.log(args);
         if (!args.url || args.url.length === 0) {
             throw new Error(`Cannot add a wishlist item without an URL`);
         }
@@ -102,8 +103,8 @@ const Mutations = {
         const newItem = await context.db.mutation.createWishlistItem({
             data: {
                 title,
-                description,
                 url,
+                description,
                 reason,
                 imageUrl,
                 wishlist: {

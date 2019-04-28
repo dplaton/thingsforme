@@ -3,6 +3,7 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
     users: forwardTo("db"),
     wishlists: forwardTo("db"),
+    wishlistItems: forwardTo("db"),
 
     wishlist: async function(parent, args, context, info) {
         const { id } = args;

@@ -6,18 +6,38 @@
 
 type Query {
     users: [User]!
-    wishlists: [Wishlist]!
+
+    wishlists(
+        where: WishlistWhereInput
+        orderBy: WishlistOrderByInput
+        skip: Int
+        after: String
+        before: String
+        first: Int
+        last: Int
+    ): [Wishlist]!
+
     wishlist(id: ID!): Wishlist
+
+    wishlistItems(
+        where: WishlistItemWhereInput
+        orderBy: WishlistItemOrderByInput
+        skip: Int
+        after: String
+        before: String
+        first: Int
+        last: Int
+    ): [WishlistItem]!
 }
 
 type Mutation {
     createWishlist(name: String!, description: String): Wishlist!
     addWishlistItem(
         title: String!
-        description: String!
         url: String!
-        imageUrl: String
+        description: String
         reason: String
+        imageUrl: String
         wishlistId: String!
     ): WishlistItem!
     createUser(name: String!, email: String!, password: String!): User!
