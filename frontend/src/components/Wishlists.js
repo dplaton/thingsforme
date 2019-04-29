@@ -6,7 +6,6 @@ import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
-import FormStyle from "./styles/FormStyle";
 import AddWishlist from "./AddWishlist";
 
 const WishlistDataStyle = styled.ul`
