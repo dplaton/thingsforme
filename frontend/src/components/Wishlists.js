@@ -1,37 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { withRouter } from "react-router-dom";
+import {Query} from "react-apollo";
+import {withRouter} from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
 import AddWishlist from "./AddWishlist";
-
-const WishlistDataStyle = styled.ul`
-    list-style: none;
-    li {
-        border-bottom: 1px solid lightgrey;
-        cursor: pointer;
-        line-height: 2rem;
-        .wishlist__data-name {
-            font-size: 2rem;
-            padding: 1rem 0;
-        }
-        .wishlist__data-description {
-            font-size: 1.8rem;
-            font-style: italic;
-            padding: 1rem 0;
-        }
-        :hover {
-            background-color: #eee;
-            transition: background-color 0.2s ease-in-out;
-        }
-    }
-    a {
-        text-decoration: none;
-    }
-`;
+import List from "./styles/List";
 
 const WISHSLISTS_QUERY = gql`
     query WISHSLISTS_QUERY {
@@ -49,29 +25,44 @@ class Wishlists extends Component {
             <div>
                 <AddWishlist />
                 <Query query={WISHSLISTS_QUERY}>
-                    {({ data, loading, error }) => {
+                    {({data, loading, error}) => {
                         if (loading) return "Loading...";
                         if (error) {
                             return <ErrorMessage error={error} />;
                         }
                         return (
-                            <WishlistDataStyle>
+                            <List>
                                 {data.wishlists.map(wishlist => (
                                     <Link
                                         to={`/wishlist/${wishlist.id}/items`}
-                                        key={wishlist.id}
-                                    >
+                                        key={wishlist.id}>
                                         <li key={wishlist.id}>
-                                            <div className="wishlist__data-name">
-                                                {wishlist.name}
+                                            <img
+                                                src="https://picsum.photos/100"
+                                                alt="placeholder"
+                                            />
+                                            <div className="data">
+                                                <div className="name">
+                                                    {wishlist.name}
+                                                </div>
+                                                <div className="description">
+                                                    {wishlist.description}
+                                                </div>
                                             </div>
-                                            <div className="wishlist__data-description">
-                                                {wishlist.description}
+                                            <div className="actions">
+                                                <button>
+                                                    <span role="img">❌</span>{" "}
+                                                    Delete
+                                                </button>
+                                                <button>
+                                                    <span role="img">✏️</span>{" "}
+                                                    Edit
+                                                </button>
                                             </div>
                                         </li>
                                     </Link>
                                 ))}
-                            </WishlistDataStyle>
+                            </List>
                         );
                     }}
                 </Query>
@@ -81,4 +72,4 @@ class Wishlists extends Component {
 }
 
 export default withRouter(Wishlists);
-export { WISHSLISTS_QUERY };
+export {WISHSLISTS_QUERY};
