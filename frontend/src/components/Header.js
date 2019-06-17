@@ -1,36 +1,38 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Navigation from "./Navigation";
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {makeStyles} from '@material-ui/core/styles';
 
-const Logo = styled.div``;
+import {Toolbar, AppBar, IconButton, Menu, Typography} from '@material-ui/core';
 
-const StyledHeader = styled.header`
-    .bar {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        justify-content: space-between;
-        align-items: stretch;
-        border-bottom: 10px solid lightgray;
+const useStyles = makeStyles(theme => ({
+    root: {
+        flowGrow: 1
+    },
+    menuButton: {
+        marginRight: theme.spacing(2)
     }
-    a {
-        text-decoration: none;
-    }
-`;
+}));
 
 const Header = () => {
+    const classes = useStyles();
+
     return (
-        <StyledHeader>
-            <div className="bar">
-                <Link to="/">
-                    <Logo>
-                        <div className="first">Things</div>
-                        <span className="second">for ME</span>
-                    </Logo>
-                </Link>
-                <Navigation />
-            </div>
-        </StyledHeader>
+        <div>
+            <AppBar position="static">
+                <Toolbar variant="dense">
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        className={classes.menuButton}
+                        aria-label="menu">
+                        <Menu open={false} />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit">
+                        Wishlists
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+        </div>
     );
 };
 
